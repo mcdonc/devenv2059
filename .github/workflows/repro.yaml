@@ -16,6 +16,7 @@ jobs:
       - uses: DeterminateSystems/determinate-nix-action@main
       - name: Install devenv
         run: |
+          set -x
           nix profile install --accept-flake-config \
             github:cachix/devenv/${{ matrix.devenv-ver }}
       - name: Step 1, should have wazzup command
@@ -34,9 +35,9 @@ jobs:
           cp -r steps/step2/* .
           git add devenv.*
           # should succeed
-          devenv -- wazzup 2>&1 | tee $log
+          devenv shell -- wazzup 2>&1 | tee $log
           # should succeed
-          devenv -- testderiv2 2>&1 | tee -a $log
+          devenv shell -- testderiv2 2>&1 | tee -a $log
       - name: Step 3, same as 2, except should recognize devenv.local.nix
         run: |
           set -x
