@@ -13,10 +13,14 @@ in
     echo "YO wazzup"
   '';
 
-  scripts.testderiv2.exec = ''
+  scripts.testderiv.exec = ''
     testderiv2
   '';
   
+  scripts.hasdevenvlocal.exec = ''
+   echo XXX$HAS_DEVENV_LOCALXXX
+  '';
+
   enterShell = ''
     wazzup
   '';

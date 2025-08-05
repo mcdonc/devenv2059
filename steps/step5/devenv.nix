@@ -1,8 +1,8 @@
 { pkgs, lib, config, inputs, ... }:
 
 let
-  deriv = pkgs.writeShellScriptBin "testderiv@@PLACEHOLDER@@" ''
-    echo "YO from @@PLACEHOLDER@@"
+  deriv = pkgs.writeShellScriptBin "testderiv3" ''
+    echo "YO from testderiv3"
   '';
 in
 {
@@ -13,8 +13,8 @@ in
     echo "YO wazzup"
   '';
 
-  scripts.testderiv@@PLACEHOLDER@@.exec = ''
-    testderiv@@PLACEHOLDER@@
+  scripts.testderiv.exec = ''
+    testderiv3
   '';
   
   enterShell = ''

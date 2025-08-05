@@ -6,6 +6,10 @@
     echo "YO wazzup"
   '';
 
+  scripts.hasdevenvlocal.exec = ''
+   echo XXX$HAS_DEVENV_LOCALXXX
+  '';
+
   enterShell = ''
     wazzup
   '';
