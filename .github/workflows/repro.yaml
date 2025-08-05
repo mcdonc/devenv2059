@@ -1,0 +1,76 @@
+name: Repro devenv 2059
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        devenv-ver: [ "v1.8.1", "main" ]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: DeterminateSystems/determinate-nix-action@main
+      - name: Install devenv
+        run: |
+          nix profile install --accept-flake-config \
+            github:cachix/devenv/${{ matrix.devenv-ver }}
+      - name: Step 1, should have wazzup command
+        run: |
+          set -x
+          log=output.log
+          cp -r steps/step1/* .
+          git add devenv.*
+          # should succeed
+          devenv shell -- wazzup 2>&1 | tee $log
+      - name: Step 2, should still have wazzup plus a new derivation testderiv2
+        run: |
+          set -x
+          log=output2.log
+          rm -f devenv.nix devenv.local.nix
+          cp -r steps/step2/* .
+          git add devenv.*
+          # should succeed
+          devenv -- wazzup 2>&1 | tee $log
+          # should succeed
+          devenv -- testderiv2 2>&1 | tee -a $log
+      - name: Step 3, same as 2, except should recognize devenv.local.nix
+        run: |
+          set -x
+          log=output3.log
+          rm -f devenv.nix devenv.local.nix
+          cp -r steps/step3/* .
+          git add devenv.*
+          devenv shell -- wazzup 2>&1 | tee $log
+          devenv shell -- testderiv2 2>&1 | tee -a $log
+          devenv shell -- echo "$HAS_DEVENV_LOCAL" 2>&1 | tee -a $log
+      - name: Step 4, same as 3, except devenv.local.nix removed
+        run: |
+          set -x
+          log=output4.log
+          rm -f devenv.nix devenv.local.nix
+          cp -r steps/step4/* .
+          git add devenv.*
+          # should succeed
+          devenv shell -- wazzup 2>&1 | tee $log
+          # should succeed
+          devenv shell -- testderiv2 2>&1 | tee -a $log
+          # should be XXXXXX
+          devenv shell -- echo "XXX$HAS_DEVENV_LOCALXXX" 2>&1 | tee -a $log
+      - name: Step 5, same as 4, except testderiv2 replaced by testderiv3
+        run: |
+          set -x
+          log=output5.log
+          rm -f devenv.nix devenv.local.nix
+          cp -r steps/step5/* .
+          git add devenv.*
+          # should succeed
+          devenv shell -- wazzup 2>&1 | tee $log
+          # should fail
+          devenv shell -- testderiv2 2>&1 | tee -a $log
+          # should succeed
+          devenv shell -- testderiv3 2>&1 | tee -a $log
+          # should be XXXXXX
+          devenv shell -- echo "XXX$HAS_DEVENV_LOCALXXX" 2>&1 | tee -a $log
