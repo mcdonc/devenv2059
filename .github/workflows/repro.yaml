@@ -44,10 +44,10 @@ jobs:
           rm -f devenv.nix devenv.local.nix
           cp -r steps/step3/* .
           git add devenv.*
-          devenv shell -- wazzup 2>&1 | tee $log
-          devenv shell -- testderiv 2>&1 | tee -a $log
-          #should be XXXasjkasdkasdjkasXXX
-          devenv shell -- hasdevenvlocal 2>&1 | tee -a $log
+          devenv shell wazzup 2>&1 | tee $log
+          devenv shell testderiv 2>&1 | tee -a $log
+          #should be XXX something XXX
+          devenv shell hasdevenvlocal 2>&1 | tee -a $log
       - name: Step 4, same as 3, except devenv.local.nix removed
         run: |
           set -x
@@ -59,7 +59,7 @@ jobs:
           devenv shell wazzup 2>&1 | tee $log
           # should be testderiv2
           devenv shell testderiv 2>&1 | tee -a $log
-          # should be XXXXXX
+          # should be XXX  XXX
           devenv shell hasdevenvlocal 2>&1 | tee -a $log
       - name: Step 5, same as 4, except testderiv2 replaced by testderiv3
         run: |
@@ -72,5 +72,5 @@ jobs:
           devenv shell wazzup 2>&1 | tee $log
           # should be testderiv3
           devenv shell testderiv 2>&1 | tee -a $log
-          # should be XXXXXX
+          # should be XXX  XXX
           devenv shell hasdevenvlocal 2>&1 | tee -a $log
