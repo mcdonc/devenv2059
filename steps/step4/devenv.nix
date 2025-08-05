@@ -2,7 +2,7 @@
 
 let
   deriv = pkgs.writeShellScriptBin "testderiv2" ''
-    echo "YO from 2"
+    echo "YO from testderiv2"
   '';
 in
 {
