@@ -24,7 +24,7 @@ jobs:
           log=output.log
           cp -r steps/step1/* .
           git add devenv.*
-          # should echo "YO wazzup"
+          echo "should echo "YO wazzup""
           devenv shell wazzup 2>&1 | tee $log
       - name: Step 2, should still have wazzup plus a new derivation testderiv2
         run: |
@@ -33,9 +33,9 @@ jobs:
           rm -f devenv.nix devenv.local.nix
           cp -r steps/step2/* .
           git add devenv.*
-          # should echo "YO wazzup"
+          echo "should echo "YO wazzup""
           devenv shell wazzup 2>&1 | tee $log
-          # should echo "YO from testderiv2"
+          echo "should echo "YO from testderiv2""
           devenv shell testderiv 2>&1 | tee -a $log
       - name: Step 3, same as 2, except should recognize devenv.local.nix
         run: |
@@ -44,11 +44,11 @@ jobs:
           rm -f devenv.nix devenv.local.nix
           cp -r steps/step3/* .
           git add devenv.*
-          # should echo "YO wazzup"
+          echo "should echo "YO wazzup""
           devenv shell wazzup 2>&1 | tee $log
-          # should echo "YO from testderiv2"
+          echo "should echo "YO from testderiv2""
           devenv shell testderiv 2>&1 | tee -a $log
-          #should echo "XXX yeah has devenv local XXX"
+          echo "should echo "XXX yeah has devenv local XXX""
           devenv shell hasdevenvlocal 2>&1 | tee -a $log
       - name: Step 4, same as 3, except devenv.local.nix removed
         run: |
@@ -57,11 +57,11 @@ jobs:
           rm -f devenv.nix devenv.local.nix
           cp -r steps/step4/* .
           git add devenv.*
-          # should echo "YO wazzup"
+          echo "should echo "YO wazzup""
           devenv shell wazzup 2>&1 | tee $log
-          # should echo "YO from testderiv2"
+          echo :should echo "YO from testderiv2""
           devenv shell testderiv 2>&1 | tee -a $log
-          # should echo "XXX  XXX"
+          echo "should echo "XXX  XXX""
           devenv shell hasdevenvlocal 2>&1 | tee -a $log
       - name: Step 5, same as 4, except testderiv2 replaced by testderiv3
         run: |
@@ -70,9 +70,35 @@ jobs:
           rm -f devenv.nix devenv.local.nix
           cp -r steps/step5/* .
           git add devenv.*
-          # should echo "YO wazzup"
+          echo "should echo "YO wazzup""
           devenv shell wazzup 2>&1 | tee $log
-          # should echo "YO from testderiv3"
+          echo "should echo "YO from testderiv3""
           devenv shell testderiv 2>&1 | tee -a $log
-          # should echo "XXX  XXX"
+          echo "should echo "XXX  XXX""
+          devenv shell hasdevenvlocal 2>&1 | tee -a $log
+      - name: Step 6, same as 5, except testderiv3 replaced by testderiv4 and impure
+        run: |
+          set -x
+          log=output6.log
+          rm -f devenv.nix devenv.local.nix
+          cp -r steps/step6/* .
+          git add devenv.*
+          echo "should echo "YO wazzup""
+          devenv shell wazzup 2>&1 | tee $log
+          echo "should echo "YO from testderiv4""
+          devenv shell testderiv 2>&1 | tee -a $log
+          echo "should echo "XXX  XXX""
+          devenv shell hasdevenvlocal 2>&1 | tee -a $log
+      - name: Step 7, same as 6, except testderiv4 replaced by testderiv3 and pure
+        run: |
+          set -x
+          log=output7.log
+          rm -f devenv.nix devenv.local.nix
+          cp -r steps/step7/* .
+          git add devenv.*
+          echo "should echo "YO wazzup""
+          devenv shell wazzup 2>&1 | tee $log
+          echo "should echo "YO from testderiv3""
+          devenv shell testderiv 2>&1 | tee -a $log
+          echo "should echo "XXX  XXX""
           devenv shell hasdevenvlocal 2>&1 | tee -a $log
