@@ -10,7 +10,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ver: [ "1.8.1", "main" ]
+        ver: [ "v1.8.1", "main" ]
     steps:
       - uses: actions/checkout@v4
       - uses: DeterminateSystems/determinate-nix-action@main
@@ -25,6 +25,7 @@ jobs:
           cp -r steps/step1/* .
           echo 'should echo "YO wazzup"'
           devenv shell wazzup 2>&1 | tee $log
+          grep -q "YO wazzup" $log || exit 1
       - name: Step 2, should still have wazzup plus a new derivation testderiv2
         run: |
           set -x
@@ -35,10 +36,12 @@ jobs:
           echo 'should echo "YO wazzup"'
           echo
           devenv shell wazzup 2>&1 | tee $log
+          grep -q "YO wazzup" $log || exit 1
           echo
           echo 'should echo "YO from testderiv2"'
           echo
           devenv shell testderiv 2>&1 | tee -a $log
+          grep -q "YO from testderiv2" $log || exit 1
       - name: Step 3, same as 2, except should recognize devenv.local.nix
         run: |
           set -x
@@ -49,14 +52,17 @@ jobs:
           echo 'should echo "YO wazzup"'
           echo
           devenv shell wazzup 2>&1 | tee $log
+          grep -q "YO wazzup" $log || exit 1
           echo
           echo 'should echo "YO from testderiv2"'
           echo
           devenv shell testderiv 2>&1 | tee -a $log
+          grep -q "YO from testderiv2" $log || exit 1
           echo
           echo 'should echo "XXX yeah has devenv local XXX"'
           echo
           devenv shell hasdevenvlocal 2>&1 | tee -a $log
+          grep -q "XXX yeah has devenv local XXX" $log || exit 1
       - name: Step 4, same as 3, except devenv.local.nix removed
         run: |
           set -x
@@ -67,14 +73,17 @@ jobs:
           echo 'should echo "YO wazzup"'
           echo
           devenv shell wazzup 2>&1 | tee $log
+          grep -q "YO wazzup" $log || exit 1
           echo
           echo 'should echo "YO from testderiv2"'
           echo
           devenv shell testderiv 2>&1 | tee -a $log
+          grep -q "YO from testderiv2" $log || exit 1
           echo
           echo 'should echo "XXX  XXX"'
           echo
           devenv shell hasdevenvlocal 2>&1 | tee -a $log
+          grep -q "XXX  XXX" $log || exit 1
       - name: Step 5, same as 4, except testderiv2 replaced by testderiv3
         run: |
           set -x
@@ -85,14 +94,17 @@ jobs:
           echo 'should echo "YO wazzup"'
           echo
           devenv shell wazzup 2>&1 | tee $log
+          grep -q "YO wazzup" $log || exit 1
           echo
           echo 'should echo "YO from testderiv3"'
           echo
           devenv shell testderiv 2>&1 | tee -a $log
+          grep -q "YO from testderiv3" $log || exit 1
           echo
           echo 'should echo "XXX  XXX"'
           echo
           devenv shell hasdevenvlocal 2>&1 | tee -a $log
+          grep -q "XXX  XXX" $log || exit 1
       - name: Step 6, same as 5, except testderiv3 replaced by testderiv4 and impure
         run: |
           set -x
@@ -103,14 +115,17 @@ jobs:
           echo 'should echo "YO wazzup"'
           echo
           devenv shell wazzup 2>&1 | tee $log
+          grep -q "YO wazzup" $log || exit 1
           echo
           echo 'should echo "YO from testderiv4"'
           echo
           devenv shell testderiv 2>&1 | tee -a $log
+          grep -q "YO from testderiv4" $log || exit 1
           echo
           echo 'should echo "XXX  XXX"'
           echo
           devenv shell hasdevenvlocal 2>&1 | tee -a $log
+          grep -q "XXX  XXX" $log || exit 1
       - name: Step 7, same as 6, except testderiv4 replaced by testderiv3 and pure
         run: |
           set -x
@@ -121,11 +136,14 @@ jobs:
           echo 'should echo "YO wazzup"'
           echo
           devenv shell wazzup 2>&1 | tee $log
+          grep -q "YO wazzup" $log || exit 1
           echo
           echo 'should echo "YO from testderiv3"'
           echo
           devenv shell testderiv 2>&1 | tee -a $log
+          grep -q "YO from testderiv3" $log || exit 1
           echo
           echo 'should echo "XXX  XXX"'
           echo
           devenv shell hasdevenvlocal 2>&1 | tee -a $log
+          grep -q "XXX  XXX" $log || exit 1
