@@ -17,8 +17,12 @@ in
     testderiv3
   '';
   
-  enterShell = ''
-    wazzup
+  scripts.hasdevenvlocal.exec = ''
+   echo "XXX $HAS_DEVENV_LOCAL XXX"
   '';
 
+  enterShell = ''
+    echo "entered shell"
+  '';
+  
 }

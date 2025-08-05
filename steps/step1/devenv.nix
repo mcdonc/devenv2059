@@ -7,11 +7,11 @@
   '';
 
   scripts.hasdevenvlocal.exec = ''
-   echo XXX$HAS_DEVENV_LOCALXXX
+   echo "XXX $HAS_DEVENV_LOCAL XXX"
   '';
 
   enterShell = ''
-    wazzup
+    echo "entered shell"
   '';
 
 }
