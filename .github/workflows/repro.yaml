@@ -59,7 +59,7 @@ jobs:
           git add devenv.*
           echo "should echo "YO wazzup""
           devenv shell wazzup 2>&1 | tee $log
-          echo :should echo "YO from testderiv2""
+          echo "should echo "YO from testderiv2""
           devenv shell testderiv 2>&1 | tee -a $log
           echo "should echo "XXX  XXX""
           devenv shell hasdevenvlocal 2>&1 | tee -a $log
