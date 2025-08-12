@@ -48,6 +48,7 @@ jobs:
           log=output3.log
           rm -f devenv.nix devenv.local.nix
           cp -r steps/step3/* .
+          ls -al
           echo
           echo 'should echo "YO wazzup"'
           echo
